@@ -3,7 +3,7 @@ name: KICKS Scan
 on:
   push:
     branches:
-      - main  # Adjust the branch name as per your needs
+      - main  
 
 jobs:
   scan-repositories:
