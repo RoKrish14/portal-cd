@@ -27,15 +27,11 @@ jobs:
       - name: Scan sub-repositories
         run: |
           trivy image --format json -o trivy_results.json
-            ${{ env.PORTAL_FRONTEND_REPO }}
-            ${{ env.PORTAL_BACKEND_REPO }}
-            ${{ env.PORTAL_ASSETS_REPO }}
-            ${{ env.PORTAL_FRONTEND_REGISTRATION_REPO }}
+            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-backend.url }}
+            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-assets.url }}
+            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-frontend-registration.url }}
+            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-frontend.url }}
         env:
-          PORTAL_FRONTEND_REPO: ${{ fromJson(env.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-frontend.url }}
-          PORTAL_BACKEND_REPO: ${{ fromJson(env.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-backend.url }}
-          PORTAL_ASSETS_REPO: ${{ fromJson(env.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-assets.url }}
-          PORTAL_FRONTEND_REGISTRATION_REPO: ${{ fromJson(env.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-frontend-registration.url }}
           TRACTUSX_FILE: ${{ secrets.TRACTUSX_FILE }}
 
       - name: Upload Trivy scan results
