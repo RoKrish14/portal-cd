@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Trivy
-        uses: aquasecurity/trivy-action@master
+        run: docker pull aquasec/trivy:0.19.2
         with:
           scan-type: "config"
           exit-code: "1"
@@ -28,15 +28,15 @@ jobs:
 
       - name: Scan leading repository
         run: |
-          trivy image --format json -o trivy_results.json ${{ secrets.GITHUB_REPOSITORY }}
+          docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ secrets.GITHUB_REPOSITORY }}
         id: leading_scan
 
       - name: Scan sub-repositories
         run: |
-          trivy image --format json -o trivy_results.json
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[0].url }}
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[1].url }}
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[2].url }}
+          docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json \
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[0].url }} \
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[1].url }} \
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[2].url }} \
             ${{ fromJson(secrets.TRACTUSX_FILE).repositories[3].url }}
         env:
           TRACTUSX_FILE: ${{ secrets.TRACTUSX_FILE }}
