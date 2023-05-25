@@ -19,11 +19,11 @@ jobs:
       - name: Set up Trivy
         run: docker pull aquasec/trivy:0.19.2
 
-      - name: Get TractusX File
-        uses: joshincode/tractusx-action@v1
-        with:
-          path: '.tractusx'
-          id: tractusx
+      - name: Extract sub-repository URLs
+        run: |
+          echo "${{ secrets.TRACTUSX_FILE }}" | base64 -d > .tractusx
+          sub_repos=$(awk '/url:/{getline; print}' .tractusx | awk '{print $2}')
+          echo "::set-output name=sub_repos::$sub_repos"
 
       - name: Scan leading repository
         run: docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ secrets.GITHUB_REPOSITORY }}
@@ -31,7 +31,7 @@ jobs:
 
       - name: Scan sub-repositories
         run: |
-          for repository in ${{ steps.tractusx.outputs.repositories }}; do
+          for repository in ${{ steps.extract_urls.outputs.sub_repos }}; do
             docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json $repository
           done
 
