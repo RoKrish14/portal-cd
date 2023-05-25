@@ -21,9 +21,13 @@ jobs:
 
       - name: Extract sub-repository URLs
         run: |
+          echo "Base64 input: ${{ secrets.TRACTUSX_FILE }}"
           echo "${{ secrets.TRACTUSX_FILE }}" > .tractusx.base64
+          cat .tractusx.base64
           base64 -d .tractusx.base64 > .tractusx
+          cat .tractusx
           sub_repos=$(awk '/url:/{getline; print}' .tractusx | awk '{print $2}')
+          echo "Sub-repositories: $sub_repos"
           echo "::set-output name=sub_repos::$sub_repos"
 
       - name: Scan leading repository
