@@ -38,8 +38,8 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: trivy_results.json
-          tool_name: Trivy Vulnerability Scanner
-          check_name: Trivy Scan
+          tool_name: 'Trivy Vulnerability Scanner'
+          check_name: 'Trivy Scan'
           scan-type: "config"
           exit-code: "1"
           hide-progress: false
