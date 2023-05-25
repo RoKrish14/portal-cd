@@ -20,19 +20,20 @@ jobs:
         run: docker pull aquasec/trivy:0.19.2
 
       - name: Scan leading repository
-        run: |
-          docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ secrets.GITHUB_REPOSITORY }}
+        run: docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ secrets.GITHUB_REPOSITORY }}
         id: leading_scan
 
-      - name: Scan sub-repositories
-        run: |
-          docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json \
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[0]['url'] }} \
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[1]['url'] }} \
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[2]['url'] }} \
-            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[3]['url'] }}
-        env:
-          TRACTUSX_FILE: ${{ secrets.TRACTUSX_FILE }}
+      - name: Scan sub-repository portal-frontend
+        run: docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ fromJson(secrets.TRACTUSX_FILE).repositories[0].url }}
+
+      - name: Scan sub-repository portal-frontend-registration
+        run: docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ fromJson(secrets.TRACTUSX_FILE).repositories[1].url }}
+
+      - name: Scan sub-repository portal-assets
+        run: docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ fromJson(secrets.TRACTUSX_FILE).repositories[2].url }}
+
+      - name: Scan sub-repository portal-backend
+        run: docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json ${{ fromJson(secrets.TRACTUSX_FILE).repositories[3].url }}
 
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v1
