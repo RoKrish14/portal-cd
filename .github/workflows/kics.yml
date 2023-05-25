@@ -24,4 +24,5 @@ jobs:
       - name: Run KICKS scan
         uses: checkmarx/kics-github-action@master
         with:
-          config-path: KICKS.yaml
+          path: KICKS.yaml
+          subrepositories-path: subrepositories.txt
