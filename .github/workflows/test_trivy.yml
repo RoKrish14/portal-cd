@@ -21,7 +21,7 @@ jobs:
 
       - name: Extract sub-repository URLs
         run: |
-          echo "${{ secrets.TRACTUSX_FILE }}" | base64 -d > .tractusx
+          echo "${{ secrets.TRACTUSX_FILE }}" | base64 --decode > .tractusx
           sub_repos=$(awk '/url:/{getline; print}' .tractusx | awk '{print $2}')
           echo "::set-output name=sub_repos::$sub_repos"
 
