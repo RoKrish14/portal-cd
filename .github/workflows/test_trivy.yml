@@ -27,10 +27,10 @@ jobs:
       - name: Scan sub-repositories
         run: |
           docker run --rm -v $(pwd):/workdir aquasec/trivy:0.19.2 image --format json -o trivy_results.json \
-            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-frontend.url }} \
-            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-frontend-registration.url }} \
-            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-assets.url }} \
-            ${{ fromJson(secrets.TRACTUSX_FILE).https://github.com/eclipse-tractusx/portal-backend.url }}
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[0].url }} \
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[1].url }} \
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[2].url }} \
+            ${{ fromJson(secrets.TRACTUSX_FILE).repositories[3].url }}
         env:
           TRACTUSX_FILE: ${{ secrets.TRACTUSX_FILE }}
 
