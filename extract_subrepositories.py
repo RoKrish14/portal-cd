@@ -1,3 +1,11 @@
+#########################################################################################
+#
+#  Copyright (c) 2023 ZF Friedrichshafen AG
+#  Author: Rohan Krishnamurthy
+#  E-mail: rohan.krishnamurthy@zf.com
+#
+#########################################################################################
+
 import yaml
 
 tractusx_file = ".tractusx"
